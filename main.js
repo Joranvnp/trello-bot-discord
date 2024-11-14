@@ -1215,15 +1215,6 @@ function calculateEmbedSize(embed) {
   return totalSize;
 }
 
-function getCardLabels(cardId, callback) {
-  trello.makeRequest("get", `/1/cards/${cardId}/labels`, {}, callback);
-}
-
-function getCardActions(cardId, options, callback) {
-  const params = { filter: options.filter || "all" };
-  trello.makeRequest("get", `/1/cards/${cardId}/actions`, params, callback);
-}
-
 function getCardLabelsAsync(cardId) {
   return new Promise((resolve, reject) => {
     trello.makeRequest(
@@ -1250,13 +1241,5 @@ function getCardActionsAsync(cardId, options) {
         resolve(actions);
       }
     );
-  });
-}
-async function getMembersOnCardAsync(cardId) {
-  return new Promise((resolve, reject) => {
-    trello.getBoardMembers(boardId, (error, members) => {
-      if (error) return reject(error);
-      resolve(members);
-    });
   });
 }
