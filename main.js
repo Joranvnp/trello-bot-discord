@@ -122,7 +122,6 @@ client.once("ready", () => {
   };
 
   setInterval(sendTicketsEnCoursAlert, 3600000);
-  // setInterval(sendTicketsEnCoursAlert, 15000);
 });
 
 client.on("messageCreate", async (message) => {
