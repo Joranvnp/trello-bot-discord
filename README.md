@@ -4,6 +4,8 @@
 
 Budget Bot est un bot Discord interactif qui permet de gérer des tâches en intégration avec Trello. Il offre une variété de commandes pour créer, lister, déplacer et mettre à jour des tâches, ainsi que pour gérer les membres du tableau Trello.
 
+Il est développé dans le cadre de la réalisation d'un SaaS sur la gestion de budget. Il permet de gérer les tâches d'un projet via une intégration avec Trello et peut être adapté pour tout autre type de projet.
+
 ## Fonctionnalités
 
 - **Création de tâches** directement depuis Discord.
