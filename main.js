@@ -128,21 +128,11 @@ client.on("messageCreate", async (message) => {
   if (message.author.bot) return;
 
   const prefix = "!";
-
   if (!message.content.startsWith(prefix)) return;
 
   const fullCommand = message.content.slice(prefix.length).trim();
-  const spaceIndex = fullCommand.indexOf(" ");
-
-  let command = "";
-  let args = "";
-
-  if (spaceIndex === -1) {
-    command = fullCommand.toLowerCase();
-  } else {
-    command = fullCommand.slice(0, spaceIndex).toLowerCase();
-    args = fullCommand.slice(spaceIndex + 1);
-  }
+  const args = fullCommand.split(" ");
+  const command = (args.shift() || "").toLowerCase();
 
   const commands = {
     listCards: handleListCards,
@@ -667,7 +657,7 @@ async function handleMoveTask(message, args) {
 }
 
 async function handleUpdateTask(message, args) {
-  const cardIdShort = args.shift();
+  const cardIdShort = args[0];
 
   if (!cardIdShort) {
     message.channel.send(
