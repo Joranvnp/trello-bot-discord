@@ -672,15 +672,15 @@ async function handleUpdateTask(message, args) {
     .map((arg) => arg.trim())
     .filter((arg) => arg !== "");
 
-  if (input.length < 2) {
+  if (input.length < 3) {
     message.channel.send(
-      "Veuillez fournir le nouveau nom et la nouvelle description séparés par `|`. Utilisation : `!update <id> | <nouveau nom> | <nouvelle description>`"
+      "Veuillez fournir l'ID de la tâche, le nouveau nom et la nouvelle description séparés par `|`. Utilisation : `!update <id> | <nouveau nom> | <nouvelle description>`"
     );
     return;
   }
 
-  const newName = input[0];
-  const newDescription = input[1];
+  const newName = input[1];
+  const newDescription = input[2];
 
   trello.getCardsOnBoard(boardId, function (error, cards) {
     if (error) {
@@ -696,24 +696,35 @@ async function handleUpdateTask(message, args) {
       return;
     }
 
-    trello.updateCard(
-      card.id,
-      {
-        name: newName,
-        desc: newDescription,
-      },
-      function (error) {
+    trello.updateCard(card.id, "name", newName, function (error) {
+      if (error) {
+        console.error(
+          "Erreur lors de la mise à jour du nom de la tâche :",
+          error
+        );
+        message.channel.send(
+          "Erreur lors de la mise à jour du nom de la tâche."
+        );
+        return;
+      }
+
+      trello.updateCard(card.id, "desc", newDescription, function (error) {
         if (error) {
-          console.error("Erreur lors de la mise à jour de la tâche :", error);
-          message.channel.send("Erreur lors de la mise à jour de la tâche.");
+          console.error(
+            "Erreur lors de la mise à jour de la description de la tâche :",
+            error
+          );
+          message.channel.send(
+            "Erreur lors de la mise à jour de la description de la tâche."
+          );
           return;
         }
 
         message.channel.send(
           `La tâche **${card.name}** a été mise à jour avec succès.\n**Nouveau nom :** ${newName}\n**Nouvelle description :** ${newDescription}`
         );
-      }
-    );
+      });
+    });
   });
 }
 
