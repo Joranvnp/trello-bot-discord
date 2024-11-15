@@ -702,7 +702,10 @@ async function handleUpdateTask(message, args) {
 
     trello.updateCard(
       card.id,
-      { name: newName, desc: newDescription },
+      {
+        name: encodeURIComponent(newName),
+        desc: encodeURIComponent(newDescription),
+      },
       function (error) {
         if (error) {
           console.error("Erreur lors de la mise à jour de la tâche :", error);
