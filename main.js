@@ -131,13 +131,19 @@ client.on("messageCreate", async (message) => {
 
   if (!message.content.startsWith(prefix)) return;
 
-  const args = message.content.slice(prefix.length).trim().split(/\s+/);
-  let command = args.shift();
-  if (command) {
-    command = command.toLowerCase();
+  const fullCommand = message.content.slice(prefix.length).trim();
+  const spaceIndex = fullCommand.indexOf(" ");
+
+  let command = "";
+  let args = "";
+
+  if (spaceIndex === -1) {
+    command = fullCommand.toLowerCase();
   } else {
-    command = "";
+    command = fullCommand.slice(0, spaceIndex).toLowerCase();
+    args = fullCommand.slice(spaceIndex + 1);
   }
+
   const commands = {
     listCards: handleListCards,
     create: handleCreateTask,
@@ -1151,20 +1157,17 @@ async function handleHelp(message, args) {
         "!list : Liste les tâches dans la colonne sélectionnée.\n" +
         "!move : Déplace une tâche vers la colonne sélectionnée.\n" +
         "!update : Met à jour une tâche.\n" +
-        "  - **Utilisation :** `!update <ID de la tâche> | <Nouveau nom> | <Nouvelle description>`\n" +
         "!info : Affiche les informations d'une tâche précise.\n\n" +
         "!members : Liste les membres du tableau.\n" +
         "!member : Affiche les informations d'un membre précis.\n\n" +
         "!assign : Assigne une tâche à un membre.\n" +
-        "!unassign : Désassigne un membre d'une tâche.\n\n" +
+        "!unassign : Désassigne une tâche à un membre précis.\n\n" +
         "!done : Marque une tâche comme terminée.\n" +
         "!progress : Marque une tâche en progression.\n\n" +
         "!help : Affiche la liste des commandes disponibles."
     )
     .setFooter({
-      text:
-        "Utilisez ces commandes pour interagir avec le bot.\n" +
-        "©2024 Joran Vanpeene.",
+      text: "Utilisez ces commandes pour interagir avec le bot. \n©2024 Joran Vanpeene.",
     });
 
   message.channel.send({ embeds: [helpEmbed] });
