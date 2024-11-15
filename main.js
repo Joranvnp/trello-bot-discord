@@ -703,8 +703,8 @@ async function handleUpdateTask(message, args) {
     trello.updateCard(
       card.id,
       {
-        name: encodeURIComponent(newName),
-        desc: encodeURIComponent(newDescription),
+        name: newName,
+        desc: newDescription,
       },
       function (error) {
         if (error) {
@@ -714,7 +714,7 @@ async function handleUpdateTask(message, args) {
         }
 
         message.channel.send(
-          `La tâche **${card.name}** a été mise à jour avec succès. Nouveau nom : **${newName}**, Nouvelle description : **${newDescription}**.`
+          `La tâche **${card.name}** a été mise à jour avec succès.\n**Nouveau nom :** ${newName}\n**Nouvelle description :** ${newDescription}`
         );
       }
     );
@@ -1151,17 +1151,20 @@ async function handleHelp(message, args) {
         "!list : Liste les tâches dans la colonne sélectionnée.\n" +
         "!move : Déplace une tâche vers la colonne sélectionnée.\n" +
         "!update : Met à jour une tâche.\n" +
+        "  - **Utilisation :** `!update <ID de la tâche> | <Nouveau nom> | <Nouvelle description>`\n" +
         "!info : Affiche les informations d'une tâche précise.\n\n" +
         "!members : Liste les membres du tableau.\n" +
         "!member : Affiche les informations d'un membre précis.\n\n" +
         "!assign : Assigne une tâche à un membre.\n" +
-        "!unassign : Désassigne une tâche à un membre précis.\n\n" +
+        "!unassign : Désassigne un membre d'une tâche.\n\n" +
         "!done : Marque une tâche comme terminée.\n" +
         "!progress : Marque une tâche en progression.\n\n" +
         "!help : Affiche la liste des commandes disponibles."
     )
     .setFooter({
-      text: "Utilisez ces commandes pour interagir avec le bot. \n©2024 Joran Vanpeene.",
+      text:
+        "Utilisez ces commandes pour interagir avec le bot.\n" +
+        "©2024 Joran Vanpeene.",
     });
 
   message.channel.send({ embeds: [helpEmbed] });
