@@ -661,16 +661,30 @@ async function handleMoveTask(message, args) {
 }
 
 async function handleUpdateTask(message, args) {
-  const cardIdShort = args[0];
-  const newName = args[1];
-  const newDescription = args.slice(2).join(" ");
+  const cardIdShort = args.shift();
 
-  if (!cardIdShort || !newName || !newDescription) {
+  if (!cardIdShort) {
     message.channel.send(
-      "Veuillez fournir l'ID de la tâche, le nouveau nom et la nouvelle description. Utilisation : `!updateTask <cardId> <newName> <newDescription>`"
+      "Veuillez fournir l'ID de la tâche. Utilisation : `!update <id> | <nouveau nom> | <nouvelle description>`"
     );
     return;
   }
+
+  const input = args
+    .join(" ")
+    .split("|")
+    .map((arg) => arg.trim())
+    .filter((arg) => arg !== "");
+
+  if (input.length < 2) {
+    message.channel.send(
+      "Veuillez fournir le nouveau nom et la nouvelle description séparés par `|`. Utilisation : `!update <id> | <nouveau nom> | <nouvelle description>`"
+    );
+    return;
+  }
+
+  const newName = input[0];
+  const newDescription = input[1];
 
   trello.getCardsOnBoard(boardId, function (error, cards) {
     if (error) {
